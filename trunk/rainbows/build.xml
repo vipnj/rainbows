@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+
+<project name="Rainbows" default="Compile And Launch" basedir=".">
+	<property file="build.properties"/>
+	
+	<target name="Compile And Launch" depends="Compile, Launch" description="Builds the app and launches it in the Flash Player" />
+	<target name="Generate and View Docs" depends="Generate Docs, View Docs" description="Generates AS docs for the app and opens them in the browser"/>
+	
+	<target name="Open Log Console" description="Opens the logging console for viewing the output of trace commands">
+		<exec executable="open" dir=".">
+			<arg line="${console}" />
+		</exec>
+	</target>
+	
+	<target name="Show In Browser" description="Previews the distribution version of this app in the default browser">
+		<exec executable="open" dir=".">
+			<arg line="${builddir}/index.html" />
+		</exec>
+	</target>
+	
+	<target name="Compile">
+	    <exec executable="${mxmlc}">
+	    	<arg value="-source-path=${srcdir}"/> 
+	    	<arg value="-source-path+=${sharedlib}"/> 
+	        <arg value="-library-path=${libs}"/>
+	    	<arg value="-default-frame-rate=${framerate}"/>
+	    	<arg value="-default-background-color=${bgcolor}"/>
+	    	<arg line="-default-size ${width} ${height}"/>
+	    	<arg value="-incremental=true"/>
+	    	<arg value="-strict=true"/>
+	    	<arg value="${mainclass}"/>
+	    	<arg value="-output=${outputswf}"/>
+	    </exec>
+	</target>
+
+	<target name="Launch">
+		<exec executable="open" dir=".">
+			<arg line="${flashplayer} ${outputswf}" />
+		</exec>
+	</target>
+
+	<target name="Generate Docs">
+	    <delete includeemptydirs="true">
+	        <fileset dir="${docsdir}" includes="**/*" />
+	    </delete>
+	    <exec executable="${asdoc}" spawn="true">
+	        <arg line="-doc-sources '${srcdir}' -output '${docsdir}' -main-title '${appname}' -window-title '${appname}'" />
+	    </exec>
+	</target>
+	
+	<target name="View Docs">
+		<exec executable="open" dir=".">
+			<arg line="${docsdir}/index.html" />
+		</exec>
+	</target>
+</project>
