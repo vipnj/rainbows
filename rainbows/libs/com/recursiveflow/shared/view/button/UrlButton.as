@@ -1,0 +1,5 @@
+package com.recursiveflow.shared.view.button {    import flash.display.MovieClip;
+    import flash.events.MouseEvent;
+    import flash.net.URLRequest;
+    import flash.net.navigateToURL;        
+    /**     * Extended version of SimplerButton that opens the designated URL when clicked.     *     * @author Alastair Dant     */    public class UrlButton extends SimplerButton     {        private var url : String;        private var target : String;        public function UrlButton(source : MovieClip, url:String, target:String)        {            super(source);            this.target = target;            this.url = url;        }                protected override function handleClick(event:MouseEvent):void        {        	super.handleClick(event);		    navigateToURL(new URLRequest(url), target);        }    }}
